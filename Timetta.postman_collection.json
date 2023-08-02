@@ -1,0 +1,208 @@
+{
+	"info": {
+		"_postman_id": "09a17635-1ce1-4c51-b0a6-577f43d8a687",
+		"name": "Timetta",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "27797605"
+	},
+	"item": [
+		{
+			"name": "Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res = JSON.parse(responseBody);\r",
+							"pm.collectionVariables.set(\"accessToken\", res.access_token);\r",
+							"pm.collectionVariables.set(\"refreshToken\", res.refresh_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "external",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "all offline_access",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "iagafonov@test-task.ru",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "J8bu6nFg",
+							"type": "text"
+						}
+					]
+				},
+				"url": "https://auth.timetta.com/connect/token"
+			},
+			"response": []
+		},
+		{
+			"name": "New User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{      \r\n   \"name\": \"Findus Thecat\",\r\n   \"email\": \"findus@test-task.ru\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://api.timetta.com/odata/Users"
+			},
+			"response": []
+		},
+		{
+			"name": "ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.timetta.com/odata/Users(68716174-0bc9-48dd-acda-748dfb50105c)?$select=name,authProvider,id,email,position,phone,firstWorkDay,lastWorkDay,code,editAllowed,isActive,licensed&$expand=resourcePool($select=name,id),department($select=name,id),supervisor($select=name,id),location($select=name,id),grade($select=name,id)",
+					"protocol": "https",
+					"host": [
+						"api",
+						"timetta",
+						"com"
+					],
+					"path": [
+						"odata",
+						"Users(68716174-0bc9-48dd-acda-748dfb50105c)"
+					],
+					"query": [
+						{
+							"key": "$select",
+							"value": "name,authProvider,id,email,position,phone,firstWorkDay,lastWorkDay,code,editAllowed,isActive,licensed"
+						},
+						{
+							"key": "$expand",
+							"value": "resourcePool($select=name,id),department($select=name,id),supervisor($select=name,id),location($select=name,id),grade($select=name,id)"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Billing Type",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": "https://api.timetta.com/odata/ProjectBillingTypes"
+			},
+			"response": []
+		},
+		{
+			"name": "New Progect",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Findus project\",\r\n    \"billingTypeId\": \"e87e0e6b-c034-45ac-8b74-bd0256f3f535\",\r\n    \"managerId\": \"e22bf891-4857-4284-966b-0271db3bd1e7\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://api.timetta.com/odata/Projects"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "access_token",
+			"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IkUzQUJEMzAxNzdEMEZDNjU2RDg4MDRFOTQ2RUJFOTdCNTJBRUQ2MzhSUzI1NiIsInR5cCI6ImF0K2p3dCIsIng1dCI6IjQ2dlRBWGZRX0dWdGlBVHBSdXZwZTFLdTFqZyJ9.eyJuYmYiOjE2OTA5ODQ0NTcsImV4cCI6MTY5MDk4ODA1NywiaXNzIjoiaHR0cHM6Ly9hdXRoLnRpbWV0dGEuY29tIiwiYXVkIjoid29ya3BvaW50LWFwaSIsImNsaWVudF9pZCI6ImV4dGVybmFsIiwic3ViIjoiaWFnYWZvbm92QHRlc3QtdGFzay5ydSIsImF1dGhfdGltZSI6MTY5MDk4NDQ1NywiaWRwIjoibG9jYWwiLCJuYW1lIjoi0JjQstCw0L0g0JDQs9Cw0YTQvtC90L7QsiIsInRlbmFudCI6InRlc3QtdGFzay5ydSIsImp0aSI6IjVEMEMwNzc5NjE4NDQ4QTAyQjU1MjNFOTRCOEZFQUJGIiwiaWF0IjoxNjkwOTg0NDU3LCJzY29wZSI6WyJhbGwiLCJvZmZsaW5lX2FjY2VzcyJdLCJhbXIiOlsicHdkIl19.pxXih-R4BFEC5Hubu7WU3eEKToJWrzpTdx2k2fL89D6yRoTTVYUfGccpX9YQGqaOie62F8Xk7hD18PPOfBzFHPQtf-auh4fBQi1Q43OULzNwfGcP-aQUrXIX1-9Vkg2_fQ3Wvck-5BvSCWUHtOGfWG6XNJ1iKOMjkiLCk8LKnyXDjgt8pg1FKDXgIu7Xnd9QJlsKH6DpR-0EYQPxxBKsMwVdzF6_2vZN6IexCG6z8xFZSKNs9MB157U5DcxOZSaMJkLzFgIUVWlrMIsk31Am-Jk1st7JXUmNs_VpkISYCnb_4gcEktB_HUbPs37LKgidNT7tpRvKc_PbGGhHdtMXiw",
+			"type": "string"
+		},
+		{
+			"key": "refresh-token",
+			"value": "22FF81FF824571603DA12778C941902CA63C09CB99427AB80C73F5046DFB0B9E",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": ""
+		},
+		{
+			"key": "refreshToken",
+			"value": ""
+		}
+	]
+}
